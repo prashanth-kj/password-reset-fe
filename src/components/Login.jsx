@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
-import AxiosService from '../common/ApiService.jsx'
+import AxiosService from '../common/ApiService.jsx';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-       
+
        const [email,setEmail]=useState("");
        const [password,setPassword]=useState("");
        let  navigate=useNavigate();

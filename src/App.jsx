@@ -1,10 +1,10 @@
 import React from "react"
 import { BrowserRouter, Route, Routes ,Navigate } from "react-router-dom"
-import Signup from "./components/SignUp"
-import ForgetPassword from "./components/ForgetPassword"
-import Login from "./components/Login"
-import Dashboard from "./components/Dashboard"
-import ResetPassword from "./components/ResetPassword"
+import Signup from "./components/Signup.jsx"
+import ForgetPassword from "./components/ForgetPassword.jsx"
+import Login from "./components/Login.jsx"
+import Dashboard from "./components/Dashboard.jsx"
+import ResetPassword from "./components/ResetPassword.jsx"
 
 
 function App() {

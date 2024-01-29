@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import AxiosService from '../common/ApiService.jsx';
 import { toast } from 'react-toastify';
@@ -10,13 +11,14 @@ function Login() {
 
        const [email,setEmail]=useState("");
        const [password,setPassword]=useState("");
+       const [loading,setLoading]=useState(false);
        let  navigate=useNavigate();
           
        let validateLogin=async(e)=>{
                 e.preventDefault();
 
             try {
-
+                  setLoading(true)
                   let res=await AxiosService.post('/user/login',{
                       email,
                       password
@@ -32,6 +34,8 @@ function Login() {
                  } catch (error) {
                     console.log(error);
                      toast.error("Invalid Login")
+                 }finally{
+                      setLoading(false)
                  }
            }
         
@@ -53,7 +57,17 @@ function Login() {
                     </Form.Group>
                     
                     <Button className='btn btn-primary w-100 mt-3' onClick={(e)=>validateLogin(e)} >
-                        Login
+                       { loading? (
+                            <>
+                               <Spinner animation='border' size='sm'/>  
+                            </>
+                          )
+                          :
+                          (
+                             'Login'
+                          )
+
+                       } 
                     </Button>
 
                     <Form.Group className='text-center mt-4'>

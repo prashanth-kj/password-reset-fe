@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import { Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import AxiosService from '../common/ApiService';
 import {toast} from 'react-toastify'
 function Signup() {
      let [name ,setName]=useState("");
-     let[email,setEmail]=useState("");
-     let[password,setPassword]=useState("");
-      let navigate=useNavigate()
+     let [email,setEmail]=useState("");
+     let [password,setPassword]=useState("");
+     let [loading,setLoading]= useState(false);
+
+      let navigate=useNavigate();
      const createUser=async(e)=>{
             e.preventDefault();
             try {
+                setLoading(true);
                 let res=await AxiosService.post('/user/create',{
                       name,
                       email,
@@ -24,6 +28,8 @@ function Signup() {
             } catch (error) {
                 console.log(error);
                 toast.error("Please fill all the details")
+            }finally{
+                 setLoading(false)
             }
      }
   
@@ -46,7 +52,16 @@ function Signup() {
                         <Form.Control type="password" className="form-control" placeholder="Enter password" required onChange={(e)=>setPassword(e.target.value)}/>
                      </Form.Group>
                      <Button  className="btn btn-primary w-100 mt-3"  onClick={(e)=>createUser(e)}>
-                           Submit
+                          {
+                             loading ?(
+                                <>
+                                 <Spinner animation='border' size='sm'/>  
+                                </>
+                             )
+                               :(
+                                 'Submit'
+                               )
+                          } 
                      </Button>
                   </Form>
                </div>

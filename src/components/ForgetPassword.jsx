@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { Spinner } from 'react-bootstrap';
 import AxiosService from '../common/ApiService';
 import {toast} from 'react-toastify';
 
 function ForgetPassword() {
-   const[email,setEmail]=useState("")
+   const[email,setEmail]=useState("");
+   const [loading, setLoading]=useState(false);
 
    const forgetPassword=async(e)=>{
         e.preventDefault();
          try {
+               setLoading(true);
                let res= await AxiosService.post('/user/forget-password',{
                    email
                })
@@ -21,6 +24,8 @@ function ForgetPassword() {
          } catch (error) {
              console.log(error);
              toast.error("Invalid email")
+         }finally{
+             setLoading(false)
          }
    }
   return (
@@ -34,7 +39,16 @@ function ForgetPassword() {
                     <Form.Control type="email" className="form-control" placeholder="name@example.com" onChange={(e)=>setEmail(e.target.value)} />
                   </Form.Group>
                   <Button className='btn btn-primary w-100 mt-3'   onClick={(e)=>forgetPassword(e)} >
-                            Forget Password
+                        {loading ? (
+                          <>
+                              <Spinner animation='border' size='sm'/>  
+                          </>
+                        ):
+                        (
+                          'Forget Password'
+                        )
+
+                        }
                   </Button>
               </Form>
               </div>

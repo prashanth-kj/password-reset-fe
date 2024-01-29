@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { Spinner } from 'react-bootstrap';
 import AxiosService from '../common/ApiService';
 import {toast} from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function ResetPassword() {
 
-     const[password,setPassword]=useState(" ")
+     const [password,setPassword]=useState(" ");
+     const [loading,setLoading]=useState(false);
 
      const {randomString,expirationTimestamp}=useParams();
      const navigate=useNavigate();
@@ -15,7 +17,7 @@ function ResetPassword() {
      const resetPassword = async (e) => {
         e.preventDefault();
         try {
-          
+             setLoading(true);
             const res = await AxiosService.post(`/user/reset-password/${randomString}/${expirationTimestamp}`, {
               newPassword: password,
             });
@@ -33,6 +35,8 @@ function ResetPassword() {
                 console.log(error);
               }
 
+            }finally{
+                setLoading(false);
             }
     };
   
@@ -47,7 +51,18 @@ function ResetPassword() {
                 <Form.Control type="password"  className="form-control" placeholder="enter your password" onChange={(e)=>setPassword(e.target.value)} />
               </Form.Group>
               <Button className="btn btn-primary w-100 mt-3"  onClick={(e)=>resetPassword(e)} >
-                       Update Password
+                    {loading ? 
+                        (
+                          <>
+                              <Spinner animation='border' size='sm'/>  
+                          </>
+                        )
+                        :
+                        (
+                          'Update Password'
+                        )
+
+                    }
               </Button>
           </Form>
           </div>
